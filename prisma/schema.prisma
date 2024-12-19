@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model User {
+  user_id      String      @id @default(uuid())
+  name         String
+  email        String      @unique
+  phone        String
+  class        String
+  department   String
+  college      String
+  otp          String?
+  otpExpiresAt DateTime?
+  registrations Registration[] // Relation to event registration
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @updatedAt
+}
+
+model Event {
+  event_id       String         @id @default(uuid())
+  name           String
+  description    String
+  registrations  Registration[] // Link to registrations
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Registration {
+  id        String   @id @default(uuid())
+  userId    String
+  eventId   String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [user_id], onDelete: Cascade)
+  event     Event    @relation(fields: [eventId], references: [event_id], onDelete: Cascade)
+
+  @@unique([userId, eventId]) // Ensure one user can't register multiple times for the same event
+}
