@@ -8,6 +8,7 @@ compatibility_date = "2024-12-18"
 DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiNDc5OTc0ZWMtMDFiMi00M2YwLThhMzAtNWQ1ODExMDk3MWJkIiwidGVuYW50X2lkIjoiY2EwYTgyYTA2MzdlZThkMjRlZWVjNTc1MGYxNjg4MGU3ZWE1YzFhMDA1NDk2NDMyNjBhZjk3NGQ0YTE1YTE2NSIsImludGVybmFsX3NlY3JldCI6IjExMDRmMWM0LTkzNWQtNDg5OS1hZTA4LWEzZTkzM2FiOTFmZSJ9.TpJmVClh93JVVLZ26Ed8AGEihnppUvRztEQyLzlscXA"
 
 JWT_SECRET="TechNirmaan2k25"
+SENDGRID_API_KEY="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"
 # [[kv_namespaces]]
 # binding = "MY_KV_NAMESPACE"
 # id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
