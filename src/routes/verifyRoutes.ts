@@ -114,8 +114,7 @@ verifyRouter.post("/send-otp", async (c) => {
             <h1>Your OTP Code</h1>
             <p>Use the code below to complete your verification:</p>
             <p class="otp">${otp}</p>
-            <p>Please enter the above OTP on the website to complete your registration for the event 
-            ${eventName?.name}.</p>
+            <p>Please enter the above OTP on the website to complete your registration for the event.</p>
             <div class="footer">
               <p>If you have any questions, contact us at technirmaan25@gmail.com.</p>
             </div>

@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,6 +9,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 model User {
   user_id      String      @id @default(uuid())
   name         String
@@ -23,17 +21,22 @@ model User {
   otp          String?
   otpExpiresAt DateTime?
   registrations Registration[] // Relation to event registration
+  teamMembers   TeamMember[]   // Relation to team membership
   created_at   DateTime   @default(now())
   updated_at   DateTime   @updatedAt
 }
 
 model Event {
-  event_id       String         @id @default(uuid())
-  name           String
-  description    String
-  registrations  Registration[] // Link to registrations
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  event_id      String         @id @default(uuid())
+  name          String
+  description   String
+  registrations Registration[] // Link to registrations
+  teams         Team[]         // Relation to teams
+  price         String         @default("50") // Default price set to "50"
+  maxPlayers    Int            @default(1)    // Default maxPlayers set to 1
+  minPlayers    Int            @default(1)    // Default minPlayers set to 1
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 }
 
 model Registration {
@@ -46,4 +49,26 @@ model Registration {
   event     Event    @relation(fields: [eventId], references: [event_id], onDelete: Cascade)
 
   @@unique([userId, eventId]) // Ensure one user can't register multiple times for the same event
+}
+
+model Team {
+  id          String         @id @default(uuid())
+  eventId     String         // Foreign key to Event
+  members     TeamMember[]   // Relation to team members
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  event       Event          @relation(fields: [eventId], references: [event_id], onDelete: Cascade)
+}
+
+model TeamMember {
+  id          String   @id @default(uuid())
+  userId      String   // Foreign key to User
+  teamId      String   // Foreign key to Team
+  joinedAt    DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [user_id], onDelete: Cascade)
+  team        Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, teamId]) // Ensure a user can only join a team once
 }
